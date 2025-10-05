@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -14,6 +13,65 @@
 <!DOCTYPE html>
 </head>
 <style>
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Georgia', serif;
+    overflow-x: hidden;
+    opacity: 0; /* 本体フェードイン用 */
+    transition: opacity 1.5s ease;
+  }
+  body.loaded { opacity: 1; }
+
+  /* 🔹 rolling 全画面表示 */
+  #rolling {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 3000;
+    transition: opacity 1s ease;
+  }
+  #rolling.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #rolling video {
+    position: absolute;
+    width: 10%; height: 20%;
+    object-fit: cover;
+    top: 1; left: 1;
+    z-index: -1;
+  }
+  #rolling p {
+    color: white;
+    font-size: 5em;
+    letter-spacing: 3px;
+    animation: fadeIn 2s ease-in-out;
+    z-index: 2;
+    text-align: center;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 🔹 本体コンテンツ */
+  header {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background-color: rgba(21,20,20,0.8);
+    color: white;
+    text-align: center;
+    padding: 48px 20px 19px;
+    z-index: 1000;
+  }
     body {
       margin: 0;
       padding: 0;
@@ -104,7 +162,7 @@ footer p{
 
     .fullscreen-menu a {
       color: white;
-      font-size: 5rem;
+      font-size: 10rem;
       text-decoration: none;
       margin: 20px 0;
       transition: color 0.3s;
@@ -113,8 +171,27 @@ footer p{
     .fullscreen-menu a:hover {
       color: #ddd;
     }
+</style>
 
-  </style>
+
+<!-- 🔹 rolling.html の内容を組み込む -->
+<div id="rolling">
+  <video src="for.mp4" autoplay muted playsinline></video>
+  <p>Welcome to Imagination</p>
+</div>
+<script>
+  // 🔹 ローディング → 本体フェードイン
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("rolling").classList.add("hidden");
+      document.body.classList.add("loaded");
+    }, 3000); // 動画長さに合わせて調整
+  });
+</script>
+  
+  
+
+
 
   <header>
     <h1>Imagination</h1>
