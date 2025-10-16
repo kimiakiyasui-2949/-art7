@@ -12,15 +12,17 @@
     overflow-x:hidden; 
     scroll-behavior: smooth;
     font-family: 'Georgia', serif;
+    background: #fbf8f8;
   }
 
   header{
     font-size: 24px;
     margin:0;
     padding: 6px;
+    color: #111;
   }
 
-  /* ×のアニメーション & 白色 */
+  /* ×ボタンアニメーション */
   .hamburger.active div:nth-child(1) {
     transform: rotate(45deg) translate(6px, 6px);
     background: #fff;
@@ -33,7 +35,7 @@
     background: #fff;
   }
 
-  /* ハンバーガーメニュー */
+  /* ハンバーガーアイコン */
   .hamburger {
     position: fixed;
     top: 20px;
@@ -68,7 +70,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Georgia', serif;
   }
   .menu.show { height: 100%; }
   .menu a {
@@ -81,10 +82,12 @@
   }
   .menu.show a { opacity: 1; }
 
-  /* 各スライドセクション */
+  /* ===============================
+      右下からめくれるアニメーション
+  =============================== */
   .section {
     position: relative;
-    width: 100vw;  /* ← 幅を画面全体に固定 */
+    width: 100vw;
     height: 100vh;
     background-size: cover;
     background-position: center;
@@ -94,16 +97,22 @@
     align-items: center;
     color: #fff;
     text-align: center;
+
     opacity: 0;
-    transform: translateY(60px);
-    transition: all 1s ease;
-    margin: 0;
-    padding: 0;
+    transform-origin:  right;      /* ★右下を支点にめくる */
+    transform: rotateX(20deg) rotateY(deg); /* 少し右方向に傾けて立体感 */
+    perspective: 1200px;
+    backface-visibility: hidden;
+    transition:
+      transform 1.9s cubic-bezier(0.55, 0.12, 0.3, 1.15),
+      opacity 1.2s ease;
+    box-shadow: -80px -80px 160px rgba(245, 245, 245, 0.7);
   }
 
   .section.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: rotateX(0deg) rotateY(0deg);
+    box-shadow: 0 0 40px rgba(0,0,0,0.4);
   }
 
   .text {
@@ -112,7 +121,6 @@
     color: #faf2f2;
   }
 
-  /* 上部文字 */
   .section .slide-text {
     top: 30px;
     left: 20px;
@@ -130,6 +138,7 @@
     display: flex;
     margin: 0;
     padding: 0;
+    background: #fff;
   }
 
   .video {
@@ -137,7 +146,7 @@
     padding: 0;
     margin: 0;
     padding-top:24px;
-    padding-bottom: 24px;;
+    padding-bottom: 24px;
   }
 
   .section-1 .come {
@@ -152,6 +161,7 @@
     width: 100vw;
     margin: 0;
     padding: 0;
+    background: #fff;
   }
 
   .section-3 .feel {
@@ -212,7 +222,7 @@
     <div class="feel">feel</div>
   </section>
 
-  <section class="section" style="background-image:url('man.jpg')";
+  <section class="section" style="background-image:url('man.jpg');
   cursor:pointer;" 
   onclick="location.href='man.html'">
     <div class="slide-text">Street</div>
@@ -236,7 +246,7 @@
       hamburger.classList.toggle('active');
     });
 
-    // スクロールで各セクションをフェードイン
+    // スクロールで各セクションをフェードイン（右下からめくれる）
     const sections = document.querySelectorAll('.section');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -246,11 +256,10 @@
       });
     }, { threshold: 0.3 });
 
-    sections.forEach(section => {
-      observer.observe(section);
-    });
+    sections.forEach(section => observer.observe(section));
   </script>
 </body>
 </html>
+
 
 
